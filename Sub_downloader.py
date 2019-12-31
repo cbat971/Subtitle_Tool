@@ -1,6 +1,5 @@
 from youtube_transcript_api import YouTubeTranscriptApi
 
-input_url = str(input("What is your youtube videos URL? "))
 
 def start_calc(time):
 	seconds = int(time%60)
@@ -24,8 +23,10 @@ def yt_trans(url, is_id=False):
 	else:
 		if 'v=' in str(url):
 			id = str(url).split('v=')[-1]
+			url = 'https://youtu.be/' + id
 		else:
 			id = str(url).split('/')[-1]
+			url = 'https://youtu.be/' + id
 		transcript =(YouTubeTranscriptApi.get_transcript(id))
 		for x in transcript:
 			trans_text = str(trans_text) + " " + str(x['text'])
@@ -35,10 +36,13 @@ def yt_trans(url, is_id=False):
 def yt_search(url, phrase, is_id=False):
 	if is_id:
 		id= url
+		url = 'https://youtu.be/' + id 
 	elif 'v=' in str(url):
 		id = str(url).split('v=')[-1]
+		url = 'https://youtu.be/' + id
 	else:
 		id = str(url).split('/')[-1]
+		url = 'https://youtu.be/' + id
 	subs = (YouTubeTranscriptApi.get_transcript(id))
 	a=b=c=d=e= ""
 	for x in subs:
@@ -50,10 +54,11 @@ def yt_search(url, phrase, is_id=False):
 		saying = e + d + c + b + a
 		if str(phrase) in x['text']:
 			print(" '{}' was said at {}".format(saying, str(start_calc(x['start']))))
-			print("The link to this use is at {}?t={}".format(url, int(x['start']+5)))
+			print("The link to this use is at {}?t={}".format(url, int(x['start']-5)))
 			print(" ")
 			print(" ")
-
+'''
+input_url = str(input("What is your youtube videos URL? "))
 
 if len(input_url) == 11:
 	check = str(input("Would you like to search for something specific? [Y/N]")).upper()
@@ -79,4 +84,4 @@ if "youtu" in input_url:
 		yt_search(input_url, phrase)
 	else:
 		yt_trans(input_url)
-
+'''
